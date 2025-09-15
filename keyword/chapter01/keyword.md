@@ -9,21 +9,17 @@
 
 - **Join 종류들**
     - INNER JOIN → 조인하는 테이블의 ON절의 조건이 일치하는 결과만 출력한다. 교집합이라고 생각하면 된다. from절에 콤마만 써도 inner join과 같이 동작한다.
-
-      ![image.png](attachment:53d5b631-ce48-4deb-bb7d-9c41b71ad271:image.png)
-
+      ![Image](https://github.com/user-attachments/assets/264edf45-4f95-47bb-92b7-80829c055e23)
     - **LEFT OUTER JOIN** → 조건으로 필터링은 하되, 한쪽 테이블의 데이터를 필터링하지 않고 보존하고 싶을 때 사용한다. 그 중 LEFT JOIN은 FROM (테이블1) LEFT OUTER JOIN (테이블2) 이렇게 있으면 테이블1을 기준으로 조합하는 연산이다. 이를 보면 알 수 있듯이 **테이블**의 순서가 굉장히 중요한 연산이다.
 
-      ![image.png](attachment:c3d5c89b-c33c-43f2-9f6d-9673198a00c4:image.png)
-
+      ![Image](https://github.com/user-attachments/assets/51c974d2-587e-4d12-8a4d-5c35ab19b11b)
     - **RIGHT OUTER JOIN** → LEFT OUTER JOIN과 유사하되 그 기준이 테이블1이 아닌 테이블 2인 연산이다. 오른쪽 테이블에 맞춰 join한다.
 
-      ![image.png](attachment:3fb92e65-9140-4df8-b553-b702ad8ef7d4:image.png)
+      ![Image](https://github.com/user-attachments/assets/35f09e48-15e4-41ee-9ccb-5a7d9c65d18b)
 
     - **FULL OUTER JOIN** → 테이블1, 테이블2 모두를 보존하는 join 방법이나, MySQL에선 지원하지 않는 문법이다. 그렇다면 어떻게 구현하느냐,
         - **UNION →** 두 테이블의 합집합을 구한다. 다만, union 할 때 주의할 점은 select문으로 선택된 컬럼 개수와 타입, 순서까지 일치해야한다는 점이다. 기본적으로 중복제거기능이 포함되어 있는데, UNION ALL을 쓰게되면 중복을 허용한다.
-
-      ![image.png](attachment:8eefa3af-bc67-4093-a9f1-cea85aec5d19:image.png)
+          ![Image](https://github.com/user-attachments/assets/5a8d1cdb-8263-486e-ad59-1047edccd1e1)
 
     - **CROSS JOIN →** 한쪽 테이블의 모든 행과 다른 쪽 테이블의 모든 행의 모든 조합을 구한다. 전체 행 개수는 nxm이 된다.
     - **SELF JOIN →** 테이블 자기 자신과 join한다. 예를 들어, 같은 부서에서 일하는 상위 직원을 알고 싶을 때 사용한다.
