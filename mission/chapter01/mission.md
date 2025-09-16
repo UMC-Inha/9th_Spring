@@ -1,4 +1,5 @@
 # 미션기록
+![ERD.png](ERD.png)
 
 ## 1. 리뷰 작성하는 Query
 
