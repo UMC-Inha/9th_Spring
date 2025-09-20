@@ -12,8 +12,9 @@
 
 2. **필요한 컬럼 작업(구체화 전 정리 작업)**
 
-    ![엔티티 추출](https://github.com/user-attachments/assets/3ad0fd82-2023-42ca-a1e2-dc6ae3ec86f5)
+   ![ERD](./image/chapter00_erd.jpg)
 3. **erd cloud 이용하여 관계, 타입 명시**
 
-   ![UMC 0weeks .png](https://github.com/user-attachments/assets/455e2ada-699b-4222-a041-1297ed6b4d20)
-    
+   ![ERD](./image/before_refactoring.png)
+4. **피드백 반영 알람, 가게 영업 시간 테이블 추가**
+   ![ERD](./image/chapter01_erd.png)
