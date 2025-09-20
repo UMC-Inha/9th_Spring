@@ -1,4 +1,6 @@
-![UMC 0weeks .png](https://github.com/user-attachments/assets/455e2ada-699b-4222-a041-1297ed6b4d20)
+### 피드백 반영 erd 최종본 
+![ERD](./image/chapter01_erd.png)
+
 
 1. **리뷰 작성하는 쿼리**
 
