@@ -30,7 +30,7 @@ LIMIT ?;
 # 미션 2 : 트랜잭션 상태와 전파
 
 ## 트랜잭션 상태
-![이미지](/9th_Spring/mission/chapter01/transaction_status.png)
+![이미지](../chapter01/image/transaction_status.png)
 
 **활성 (Active)**
 
@@ -59,7 +59,7 @@ LIMIT ?;
 스프링을 예로 들면 어떤 메서드에서 `@Transactional`을 사용했는데, 그 메서드가 또 다른 `@Transactional` 메서드를 호출할 때 **기존 트랜잭션을 이어서 쓸지, 끊고 새로 만들지, 아예 트랜잭션 없이 실행할지**를 정하는 방식이 전파다.
 
 ### 물리 트랜잭션과 논리 트랜잭션
-![이미지](/9th_Spring/mission/chapter01/transaction_type.png)
+![이미지](../chapter01/image/transaction_type.png)
 
 스프링에서 `@Transactional`을 붙이면 AOP 프록시가 메서드 호출을 감싸면서 **논리 트랜잭션**을 시작한다. 하지만 실제 DB 커넥션 단에서는 매번 새로운 트랜잭션이 열리는 것이 아니라, **여러 논리 트랜잭션이 모여 하나의 물리 트랜잭션을 공유**하게 된다. 따라서 외부 메서드에서 이미 트랜잭션이 시작되어 있다면, 내부 메서드의 `@Transactional`은 별도의 커넥션을 생성하지 않고 기존 물리 트랜잭션에 **합류**한다.
 
@@ -83,13 +83,13 @@ LIMIT ?;
 
 예를 들어, 로직 A가 송금 기능이라면 A가 신규 트랜잭션을 시작한다. 그 안에서 레포지토리 계층이 실행될 때 생기는 내부 트랜잭션도 모두 같은 물리 트랜잭션에 포함된다. 이어서 로직 C가 로그 저장이라 해도, 기본 전파 속성(REQUIRED)이면 동일한 물리 트랜잭션에 합류한다.
 
-![이미지](/9th_Spring/mission/chapter01/transaction_required.png)
+![이미지](../chapter01/image/transaction_required.png)
 
 문제는 여기서 발생한다. 만약 로그 저장(로직 C)이 실패하면, 같은 물리 트랜잭션 안에 있는 송금(로직 A)까지 모두 롤백된다. 사용자 입장에서 보면 “로그 저장이 실패했는데 송금까지 실패”하는 것은 말이 안 되는 상황이다.
 
 이런 경우 사용할 수 있는 전파 속성이 **REQUIRES_NEW**다.
 
-![이미지](/9th_Spring/mission/chapter01/transaction_required_new.png)
+![이미지](../chapter01/image/transaction_required_new.png)
 
 로그 저장(로직 C)에 `REQUIRES_NEW`를 적용하면, 송금(로직 A)과 그 결과를 DB에 반영하는 과정(로직 B)은 하나의 물리 트랜잭션으로 묶여서 함께 성공/실패한다. 반면 로그 저장(로직 C)은 **별도의 물리 트랜잭션** 에서 실행되므로, 로그 저장이 실패하더라도 본질적인 비즈니스 로직인 송금에는 영향을 주지 않는다.
 
