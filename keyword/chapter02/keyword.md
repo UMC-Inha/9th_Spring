@@ -578,3 +578,76 @@ class RemoteControl implements Switch {
     // 값이 없으므로 IllegalArgumentException 발생
     String result3 = opt.orElseThrow(() -> new IllegalArgumentException("값 없음"));
     ```
+
+- **Stream API**
+    
+    ## Stream API란?
+    
+    - 람다식을 이용한 기술 중에 하나로 데이터 소스(컬렉션, 배열 등)를 조작 및 가공, 변환하여 원하는 값으로 변환해주는 인터페이스이다.
+    - Stream API는 데이터를 추상화하고, 처리하는 데 자주 사용되는 함수들을 제공한다.
+    
+    ### 람다식(Lambda Expression)이란?
+    
+    - 함수를 하나의 식으로 표현한 함수형 인터페이스 함수로, 람다식으로 표현하면 메서드의 이름이 없기 때문에 익명 함수의 한 종류이기도 하다.
+    
+    ### Stream Type
+    
+    - byte, short, char,float, string, boolean → Stream<Type>
+    - int, long, double → ‘type’+Stream
+    
+    ### Stream API 특징
+    
+    - 원본의 데이터를 변경하지 않는다.
+        - Stream APi는 원본의 데이터를 조회하여 별도의 Stream을 생성한다.
+        - 원본의 데이터로부터 읽기만 할 뿐이며, 정렬이나 필터링 등의 작업은 별도의 Stream요소들에서 처리 된다.
+        
+        ```java
+        String[] nameArr = {"IronMan", "Captain", "Hulk", "Thor"}
+        List<String> nameList = Arrays.asList(nameArr);
+        
+        // 별도의 스트림을 생성함.
+        Stream<String> nameStream = nameList.stream();
+        Stream<String> arrayStream = Arrays.stream(nameArr);
+        
+        // 복사된 데이터를 정렬하여 출력함
+        nameStream.sorted().forEach(System.out::println);
+        arrayStream.sorted().forEach(System.out::println);
+        ```
+        
+    - 일회용 이다.
+        - Stream API는 일회용이기 때문에 한번 사용이 끝나면 재사용이 불가능하다.
+        - Stream이 또 필요한 경우에는 Stream을 다시 생성해야 한다.
+        - 만약 닫힌 Stream을 다시 사용한다면 IllegalStateException이 발생한다.
+        
+        ```java
+        userStream.sorted().forEach(System.out::print);
+        
+        // 스트림이 이미 사용되어 닫혔으므로 에러 발생
+        int count = userStream.count();
+        ```
+        
+    - 내부 반복으로 작업을 처리한다.
+        - for이나 while문 같은 반복 문법을 메서드 내부에 숨기고 있기 때문에 간결한 코드 작성이 가능하다.
+        
+        ```java
+         // 반복문이 forEach라는 함수 내부에 숨겨져 있다.
+        nameStream.forEach(System.out::println); 
+        ```
+        
+        ### Stream 연산
+        
+        1. Stream 생성
+            1. empty stream 생성 → Stream.empty();
+            2. Collection 생성 → ArrayList.stream();
+        2. 중간 연산
+            1. filter() → 결과 값 필터링하기 위해 사용된다.
+            2. distinct() → 중복을 제거한 결과값을 반환하기 위해 사용된다.
+            3. map() → 요소들을 원하는 값으로 변화하여서 반환하기 위해 사용된다.
+            4. sorted() → 요소들에 대해서 오름/내림 차순을 수행하여 반환하기 위해 사용된다.
+            5. 등 … 많습니다.
+        3. 최종 연산
+            1. forEach() → 배열 혹은 리스트 내에서 순회하며 요소에 대한 값을 출력하거나 새로운 형태로 변환하여 구성하기 위한 목적으로 사용된다.
+            2. findFirst() → 스트림 내에서 가장 앞에 잇는 요소를 리턴하는 함수
+            3. findAny() → 스트림 내에서 먼저 탐색되는 요소를 리턴하는 함수
+            4. count() → 요소들의 개수를 리턴하는 함수
+            5. sum() → 요소들의 합을 리턴하는 함수
