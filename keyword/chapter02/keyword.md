@@ -1,286 +1,312 @@
 - **SOLID**
-## 객체 지향 설계의 5원칙 : SOLID
-
-### 1️⃣ SRP(Single Responsibility Principle): 단일 책임 원칙
-
-- **클래스가 하나의 책임만 가져야 하며, 클래스가 변경되어야 하는 이유는 오직 하나여야 한다는 원칙**
-- 여기서 ‘책임’이란, 하나의 기능을 말한다.
-- 만약 하나의 클래스에 여러 책임(기능)을 가지고 있다면, 기능 변경이 일어났을 때 수정해야할 코드가 많아진다.
-```
-// SRP 위반 예제
-class Student {
-    private String name;
-    private String department;
-
-    public Student(String name, String department) {
-        this.name = name;
-        this.deparatment = department;
+    
+    ## 객체 지향 설계의 5원칙 : SOLID
+    
+    ### 1️⃣ SRP(Single Responsibility Principle): 단일 책임 원칙
+    
+    - **클래스가 하나의 책임만 가져야 하며, 클래스가 변경되어야 하는 이유는 오직 하나여야 한다는 원칙**
+    - 여기서 ‘책임’이란, 하나의 기능을 말한다.
+    - 만약 하나의 클래스에 여러 책임(기능)을 가지고 있다면, 기능 변경이 일어났을 때 수정해야할 코드가 많아진다.
+    
+    ```java
+    // SRP 위반 예제
+    class Student {
+        private String name;
+        private String department;
+    
+        public Student(String name, String department) {
+            this.name = name;
+            this.deparatment = department;
+        }
+    
+        public void goClass() {
+            // 수업 듣는 로직
+        }
+    
+        public void generateReport() {
+            // 보고서 생성 로직
+        }
     }
-
-    public void goClass() {
-        // 수업 듣는 로직
-    }
-
-    public void generateReport() {
-        // 보고서 생성 로직
-    }
-}
-```
-- 위의 코드에서 Student 클래스는 수업을 듣는 클래스와, 보고서 생성 로직 두 가지의 책임을 가지고 있다. 따라서 SRP를 위반하는 예제이다.
-```
-// SRP 준수 예제
-class Student {
-		private String name;
-		private String department;
-		
-		public Student(String name, String department) {
-				this.name = name;
-				this.department = department;
-		}
-		
-		public void goClass() {
-				// 수업 듣는 로직
-		}
-}
-
-class ReportGenerator {
-		public void generateReport() {
-				// 보고서 생성 로직
-		}
-}
-```
-- 위의 코드에서는 Student 클래스는 수업을 듣는 것과 관련된 책임만을 가지며, 보고서 생성 로직은 별도의 클래스로 분리되었다. 따라서 SRP를 준수하는 예제이다.
-- SRP 원칙에서, 책임의 범위는 딱 정해져 있는 것이 아니라, 어떤 로직을 구현하느냐에 따라 개발자마다 기준이 달라질 수 있다.
-### 2️⃣ OCP(Open Closed Principle): 개방-폐쇄 원칙
-
-- **소프트웨어 개체(클래스, 모듈, 함수 등)는 확장에 대해서는 열려 있어야 하지만 변경에 대해서는 페쇄되어야 한다는 원칙**
-- 기능 추가할 때, 클래스를 확장을 통해 손쉽게 구현하면서, 확장에 따른 클래스 수정은 최소화 하도록 구현해야하는 설계 기법이다.
-```
-// 도형을 그리는 인터페이스
-interface Shape {
-    void draw();
-}
-
-// 원 클래스
-class Circle implements Shape {
-    public void draw() {
-        System.out.println("원을 그립니다.");
-    }
-}
-
-// 사각형 클래스
-class Rectangle implements Shape {
-    public void draw() {
-        System.out.println("사각형을 그립니다.");
-    }
-}
-
-// 그림 그리는 클래스
-class Drawing {
-    public void drawShape(Shape shape) {
-        shape.draw();
-    }
-}
-```
-- 위의 코드에서 Shape 인터페이스를 구현한 클래스들은 확장에 열려 있고, 수정에 닫혀있다. → 새로운 도형 클래스를 추가할 때 기존 코드를 수정하지 않고도 추가할 수 있다는 의미이다.
-```
-// 삼각형 클래스
-class Triangle implements Shape {
-    public void draw() {
-        System.out.println("삼각형을 그립니다.");
-    }
-}
-```
-- 예를 들어, 삼각형 클래스를 추가하려면 위와 같이 기존 코드를 수정하지 않고, 기능을 확장할 수 있다.
-- OCP원칙은 추상화 사용을 통한 관계 구축을 권장 → 다형성과 확장을 가능하게 하는 객체지향의 장점을 극대화하는 기본적인 설계 원칙
-### 3️⃣ LSP(Listov Subtitution Principle): 리스코프 치환 원칙
-
-- **서브 타입은 언제나그것의 슈퍼타입으로 대체할 수 있어야 한다는 원칙**
-- 어떤 클래스의 인스턴스가 있을 때, 그 클래스의 하위 클래스의 인스턴스로 대체해도 프로그램은 정상적으로 동작해야 한다는 의미이다.
-```
-class Bird {
-    public void fly() {
-        System.out.println("날아갈 수 있습니다.");
-    }
-}
-
-class Sparrow extends Bird {
-		// 참새는 날 수 있음.
-    // Sparrow는 Bird를 확장하면서 추가적인 행위를 정의하지 않음
-}
-
-class Ostrich extends Bird {
-    public void fly() {
-        // 타조는 날지 못하므로 오버라이딩하여 구현을 변경
-        System.out.println("날지 못합니다.");
-    }
-}
-```
-- 위의 코드에서 Bird 클래스는 fly 메서드를 가지고 있으며, Sparrow 클래스는 이 매서드를 오버라이딩 하지 않고 상속한다.
-- Ostrich는 날지 못하므로 fly 메서드를 오버라이딩하여 Bird클래스와 다르게 구현한다.
-- 여기서, Sparrow와 Ostrich클래스 모두 Bird 타입의 객체로 대체될 수 있으며, 프로그램은 정상적으로 작동한다.
-```
-public class Main {
-    public static void main(String[] args) {
-        Bird sparrow = new Sparrow();
-        Bird ostrich = new Ostrich();
-
-        sparrow.fly(); // "날아갈 수 있습니다." 출력
-        ostrich.fly(); // "날지 못합니다." 출력
-    }
-}
-```
-- 위의 코드에서 다형성의 특징을 이용하기 위해, 상위 클래스 타입으로 객체를 선언하여 하위 클래스의 인스턴스를 받는다.
-- LSP원칙은 이러한 상황에서 업캐스팅된 상태에서 부모의 메서드를 사용해도 동작이 의도대로 흘러가야 하는 것을 의미한다.
-### 4️⃣ ISP(Interface Segregation Principle): 인터페이스 분리 원칙
-
-- **클라이언트가 자신이 사용하지 않는 메서드에 의존하지 않아야 한다는 원칙**
-- SRP 원칙이 클래스의 단일 책임을 강조한다면, ISP 원칙은 인터페이스의 단일 책임을 강조하는 것이다.
-```
-// ISP 위반 예제
-interface Worker {
-    void work();
-    void eat();
-}
-
-class Human implements Worker {
-    public void work() {
-        // 일하는 로직
+    ```
+    
+    - 위의 코드에서 Student 클래스는 수업을 듣는 클래스와, 보고서 생성 로직 두 가지의 책임을 가지고 있다. 따라서 SRP를 위반하는 예제이다.
+    
+    ```java
+    // SRP 준수 예제
+    class Student {
+    		private String name;
+    		private String department;
+    		
+    		public Student(String name, String department) {
+    				this.name = name;
+    				this.department = department;
+    		}
+    		
+    		public void goClass() {
+    				// 수업 듣는 로직
+    		}
     }
     
-    public void eat() {
-        // 식사하는 로직
+    class ReportGenerator {
+    		public void generateReport() {
+    				// 보고서 생성 로직
+    		}
     }
-}
-
-class Robot implements Worker {
-    public void work() {
-        // 일하는 로직
+    ```
+    
+    - 위의 코드에서는 Student 클래스는 수업을 듣는 것과 관련된 책임만을 가지며, 보고서 생성 로직은 별도의 클래스로 분리되었다. 따라서 SRP를 준수하는 예제이다.
+    - SRP 원칙에서, 책임의 범위는 딱 정해져 있는 것이 아니라, 어떤 로직을 구현하느냐에 따라 개발자마다 기준이 달라질 수 있다.
+    
+    ### 2️⃣ OCP(Open Closed Principle): 개방-폐쇄 원칙
+    
+    - **소프트웨어 개체(클래스, 모듈, 함수 등)는 확장에 대해서는 열려 있어야 하지만 변경에 대해서는 페쇄되어야 한다는 원칙**
+    - 기능 추가할 때, 클래스를 확장을 통해 손쉽게 구현하면서, 확장에 따른 클래스 수정은 최소화 하도록 구현해야하는 설계 기법이다.
+    
+    ```java
+    // 도형을 그리는 인터페이스
+    interface Shape {
+        void draw();
     }
     
-    public void eat() {
-        // 로봇은 먹지 않는데도 먹는 메서드를 구현해야 함
-    }
-}
-```
-- 위의 코드에서 Worker 인터페이스는 work와 eat 매서드를 가지고 있다.
-- 하지만, Worker 인터페이스를 상속받아 Robot 클래스를 구현하려면 로봇은 먹지 못함에도 불구하고 eat 매서드를 구현해야 한다.
-```
-// ISP 준수 예제
-interface Workable {
-    void work();
-}
-
-interface Eatable {
-    void eat();
-}
-
-class Human implements Workable, Eatable {
-    public void work() {
-        // 일하는 로직
+    // 원 클래스
+    class Circle implements Shape {
+        public void draw() {
+            System.out.println("원을 그립니다.");
+        }
     }
     
-    public void eat() {
-        // 식사하는 로직
+    // 사각형 클래스
+    class Rectangle implements Shape {
+        public void draw() {
+            System.out.println("사각형을 그립니다.");
+        }
     }
-}
-
-class Robot implements Workable {
-    public void work() {
-        // 일하는 로직
+    
+    // 그림 그리는 클래스
+    class Drawing {
+        public void drawShape(Shape shape) {
+            shape.draw();
+        }
     }
-}
-```
-- ISP 원칙을 준수하려면, 위와 같은 코드로 인터페이스를 분리해서 클라이언트가 필요로 하는 인터페이스만 상속받도록 해야 한다.
-- 이때, 인터페이스를 한번 분리해 구성해 놓고, 이후에 수정 사항이 생겨 다시 인터페이스를 분리하는 행위를 가하지 않도록 주의해야 한다.
-### 5️⃣ DIP(Dependency Inversion Principle): 의존 역전 원칙
-
-- **고수준 모듈은 저수준 모듈에 의존해서는 안 되며, 둘 모두 추상화에 의존해야 한다는 원칙**
-- 소스 코드의 의존성이 추상화에 의해 정의되어야 하며, 구체적인 구현에 의존해서는 안된다는 것을 의미한다.
-- 고수준 모듈: 어떠한 의미 있는 단일 기능을 제공하는 모듈. 시스템의 정책, 규칙, 흐름을 정의하는 쪽
-- 저수준 모듈: 고수준 모듈의 기능을 구현하기 위해 필요한 기능들을 구현한 모듈
-```
-// 저수준 모듈
-class LightBulb {
-    public void turnOn() {
-        System.out.println("전구가 켜집니다.");
+    ```
+    
+    - 위의 코드에서 Shape 인터페이스를 구현한 클래스들은 확장에 열려 있고, 수정에 닫혀있다. → 새로운 도형 클래스를 추가할 때 기존 코드를 수정하지 않고도 추가할 수 있다는 의미이다.
+    
+    ```java
+    // 삼각형 클래스
+    class Triangle implements Shape {
+        public void draw() {
+            System.out.println("삼각형을 그립니다.");
+        }
     }
-
-    public void turnOff() {
-        System.out.println("전구가 꺼집니다.");
+    ```
+    
+    - 예를 들어, 삼각형 클래스를 추가하려면 위와 같이 기존 코드를 수정하지 않고, 기능을 확장할 수 있다.
+    - OCP원칙은 추상화 사용을 통한 관계 구축을 권장 → 다형성과 확장을 가능하게 하는 객체지향의 장점을 극대화하는 기본적인 설계 원칙
+    
+    ### 3️⃣ LSP(Listov Subtitution Principle): 리스코프 치환 원칙
+    
+    - **서브 타입은 언제나그것의 슈퍼타입으로 대체할 수 있어야 한다는 원칙**
+    - 어떤 클래스의 인스턴스가 있을 때, 그 클래스의 하위 클래스의 인스턴스로 대체해도 프로그램은 정상적으로 동작해야 한다는 의미이다.
+    
+    ```java
+    class Bird {
+        public void fly() {
+            System.out.println("날아갈 수 있습니다.");
+        }
     }
-}
-
-// 고수준 모듈
-interface Switch {
-    void operate();
-}
-
-class RemoteControl implements Switch {
-    private LightBulb bulb; // LightBulb 클래스에 직접 의존
-
-    public RemoteControl(LightBulb bulb) {
-        this.bulb = bulb;
+    
+    class Sparrow extends Bird {
+    		// 참새는 날 수 있음.
+        // Sparrow는 Bird를 확장하면서 추가적인 행위를 정의하지 않음
     }
-
-    public void operate() {
-        bulb.turnOn();
+    
+    class Ostrich extends Bird {
+        public void fly() {
+            // 타조는 날지 못하므로 오버라이딩하여 구현을 변경
+            System.out.println("날지 못합니다.");
+        }
     }
-}
-```
-- 위의 코드에서 RemoteControl 클래스가 LightBulb 클래스에 직접 의존하고 있으므로 DIP를 위반하는 예제이다.
-```
-// 추상화
-interface Switchable {
-    void turnOn();
-    void turnOff();
-}
-
-// 저수준 모듈
-class LightBulb implements Switchable {
-    public void turnOn() {
-        System.out.println("전구가 켜집니다.");
+    ```
+    
+    - 위의 코드에서 Bird 클래스는 fly 메서드를 가지고 있으며, Sparrow 클래스는 이 매서드를 오버라이딩 하지 않고 상속한다.
+    - Ostrich는 날지 못하므로 fly 메서드를 오버라이딩하여 Bird클래스와 다르게 구현한다.
+    - 여기서, Sparrow와 Ostrich클래스 모두 Bird 타입의 객체로 대체될 수 있으며, 프로그램은 정상적으로 작동한다.
+    
+    ```java
+    public class Main {
+        public static void main(String[] args) {
+            Bird sparrow = new Sparrow();
+            Bird ostrich = new Ostrich();
+    
+            sparrow.fly(); // "날아갈 수 있습니다." 출력
+            ostrich.fly(); // "날지 못합니다." 출력
+        }
     }
-
-    public void turnOff() {
-        System.out.println("전구가 꺼집니다.");
+    ```
+    
+    - 위의 코드에서 다형성의 특징을 이용하기 위해, 상위 클래스 타입으로 객체를 선언하여 하위 클래스의 인스턴스를 받는다.
+    - LSP원칙은 이러한 상황에서 업캐스팅된 상태에서 부모의 메서드를 사용해도 동작이 의도대로 흘러가야 하는 것을 의미한다.
+    
+    ### 4️⃣ ISP(Interface Segregation Principle): 인터페이스 분리 원칙
+    
+    - **클라이언트가 자신이 사용하지 않는 메서드에 의존하지 않아야 한다는 원칙**
+    - SRP 원칙이 클래스의 단일 책임을 강조한다면, ISP 원칙은 인터페이스의 단일 책임을 강조하는 것이다.
+    
+    ```java
+    // ISP 위반 예제
+    interface Worker {
+        void work();
+        void eat();
     }
-}
-
-// 고수준 모듈
-interface Switch {
-    void operate();
-}
-
-// 고수준 모듈
-class RemoteControl implements Switch {
-    private Switchable device; // Switchable 추상화에 의존
-
-    public RemoteControl(Switchable device) { // 생성자 주입
-        this.device = device;
+    
+    class Human implements Worker {
+        public void work() {
+            // 일하는 로직
+        }
+        
+        public void eat() {
+            // 식사하는 로직
+        }
     }
-
-    public void operate() {
-        device.turnOn();
+    
+    class Robot implements Worker {
+        public void work() {
+            // 일하는 로직
+        }
+        
+        public void eat() {
+            // 로봇은 먹지 않는데도 먹는 메서드를 구현해야 함
+        }
     }
-}
-```
-- 위의 코드에서는 RemoteControl 클래스는 Switchable 인터페이스에 의존하고 있으며, LightBulb 클래스가 이 인터페이스를 구현하고 있다.
-- Fan, Heater와 같은 새로운 장치를 추가해도 RemoteControl을 수정할 필요가 없다.
-- 이렇게 하면 고수준 모듈이 저수준 모듈에 직접 의존하지 않고 추상화에 의존하게 되어, 시스템이 더 유연하고 확장 가능해진다.
-<aside>
-💡
-
-**RemoteControl**은 “리모콘을 눌렀을 때 장치를 켠다.” 라는 동작의 규칙/정책을 담고 있음. → 고수준 모듈
-**LightBulb**는 단순히 “켜지고 꺼진다’는 세부 구현만 담당 → 저수준 모듈
-
-</aside>
-
+    ```
+    
+    - 위의 코드에서 Worker 인터페이스는 work와 eat 매서드를 가지고 있다.
+    - 하지만, Worker 인터페이스를 상속받아 Robot 클래스를 구현하려면 로봇은 먹지 못함에도 불구하고 eat 매서드를 구현해야 한다.
+    
+    ```java
+    // ISP 준수 예제
+    interface Workable {
+        void work();
+    }
+    
+    interface Eatable {
+        void eat();
+    }
+    
+    class Human implements Workable, Eatable {
+        public void work() {
+            // 일하는 로직
+        }
+        
+        public void eat() {
+            // 식사하는 로직
+        }
+    }
+    
+    class Robot implements Workable {
+        public void work() {
+            // 일하는 로직
+        }
+    }
+    ```
+    
+    - ISP 원칙을 준수하려면, 위와 같은 코드로 인터페이스를 분리해서 클라이언트가 필요로 하는 인터페이스만 상속받도록 해야 한다.
+    - 이때, 인터페이스를 한번 분리해 구성해 놓고, 이후에 수정 사항이 생겨 다시 인터페이스를 분리하는 행위를 가하지 않도록 주의해야 한다.
+    
+    ### 5️⃣ DIP(Dependency Inversion Principle): 의존 역전 원칙
+    
+    - **고수준 모듈은 저수준 모듈에 의존해서는 안 되며, 둘 모두 추상화에 의존해야 한다는 원칙**
+    - 소스 코드의 의존성이 추상화에 의해 정의되어야 하며, 구체적인 구현에 의존해서는 안된다는 것을 의미한다.
+    - 고수준 모듈: 어떠한 의미 있는 단일 기능을 제공하는 모듈. 시스템의 정책, 규칙, 흐름을 정의하는 쪽
+    - 저수준 모듈: 고수준 모듈의 기능을 구현하기 위해 필요한 기능들을 구현한 모듈
+    
+    ```java
+    // 저수준 모듈
+    class LightBulb {
+        public void turnOn() {
+            System.out.println("전구가 켜집니다.");
+        }
+    
+        public void turnOff() {
+            System.out.println("전구가 꺼집니다.");
+        }
+    }
+    
+    // 고수준 모듈
+    interface Switch {
+        void operate();
+    }
+    
+    class RemoteControl implements Switch {
+        private LightBulb bulb; // LightBulb 클래스에 직접 의존
+    
+        public RemoteControl(LightBulb bulb) {
+            this.bulb = bulb;
+        }
+    
+        public void operate() {
+            bulb.turnOn();
+        }
+    }
+    ```
+    
+    - 위의 코드에서 RemoteControl 클래스가 LightBulb 클래스에 직접 의존하고 있으므로 DIP를 위반하는 예제이다.
+    
+    ```java
+    // 추상화
+    interface Switchable {
+        void turnOn();
+        void turnOff();
+    }
+    
+    // 저수준 모듈
+    class LightBulb implements Switchable {
+        public void turnOn() {
+            System.out.println("전구가 켜집니다.");
+        }
+    
+        public void turnOff() {
+            System.out.println("전구가 꺼집니다.");
+        }
+    }
+    
+    // 고수준 모듈
+    interface Switch {
+        void operate();
+    }
+    
+    // 고수준 모듈
+    class RemoteControl implements Switch {
+        private Switchable device; // Switchable 추상화에 의존
+    
+        public RemoteControl(Switchable device) { // 생성자 주입
+            this.device = device;
+        }
+    
+        public void operate() {
+            device.turnOn();
+        }
+    }
+    ```
+    
+    - 위의 코드에서는 RemoteControl 클래스는 Switchable 인터페이스에 의존하고 있으며, LightBulb 클래스가 이 인터페이스를 구현하고 있다.
+    - Fan, Heater와 같은 새로운 장치를 추가해도 RemoteControl을 수정할 필요가 없다.
+    - 이렇게 하면 고수준 모듈이 저수준 모듈에 직접 의존하지 않고 추상화에 의존하게 되어, 시스템이 더 유연하고 확장 가능해진다.
+    
+    <aside>
+    💡
+    
+    **RemoteControl**은 “리모콘을 눌렀을 때 장치를 켠다.” 라는 동작의 규칙/정책을 담고 있음. → 고수준 모듈
+    
+    **LightBulb**는 단순히 “켜지고 꺼진다’는 세부 구현만 담당 → 저수준 모듈
+    
+    </aside>
 - **DI**
     
     ## DI : Dependency Injection 의존성 주입
     
-    의존성 주입이란? 어떤 객체나 함수가 필요로 하는 다른 객체를 내부에서 직접 생성하지 않고, 외부에서 주입 받는 프로그래밍 기법이다.
+    의존성 주입이란? 어떤 객체나 함수가 필요로 하는 다른 객체를 내부에서 직접 생성하지 않고, 외부에서 주입 받는 프로그래밍 기법이다. → 결합도를 느슨하게
     
     ### DI의 구성요소 (Roles)
     
@@ -331,7 +357,7 @@ class RemoteControl implements Switch {
         1. 의존성이 자신을 클라이언트에 주입할 수 있는 메서드를 인터페이스로 제공한다.
         2. 클라이언트가 특정 인터페이스를 구현하야하고, 인젝터가 그 인터페이스를 통해 의존성을 넣어준다.
         3. 객체가 꼭 특정 인터페이스를 구현해야 한다는 강제성이 생기기 때문에, 실무에서는 거의 쓰이지 않는다.
-    
+
 - **IoC**
     
     ## IoC: Inversion of Control (제어의 역전)
@@ -365,6 +391,7 @@ class RemoteControl implements Switch {
         - **가장 흔하게 쓰이는 의존성 주입 방식이다.**
         - 객체를 생성할 때 한 번 생성자를 호출해 의존 관계를 정의하고, 불변으로 설계할 수 있다.
         - null을 주입하지 않는한 NullPointerException은 발생하지 않는다.
+        - 순환 참조 오류 관련 빈 생성 시점? 알아보기
         
         ```java
         public class Client {
@@ -380,6 +407,16 @@ class RemoteControl implements Switch {
         }
         ```
         
+        ```java
+        @RequiredArgsConstructor
+        public class Client {
+            private Service service;
+            
+            ...
+        }
+        ```
+        
+        - Lombok라이브러리의 `@RequiredArgsContructor` 어노테이션을 사용하면 생성자 구현을 생략할 수 있다.
     - 수정자 주입
         - 수정자 함수(set Method)를 이용해서 의존성을 주입하는 방식이다.
         - 수정자 주입 방식은 런타임 시에 할 수 있도록 낮은 결합도를 가지게 구현되어 있어서, 변경 가능성이 있는 의존 관계에 사용한다.
@@ -419,6 +456,20 @@ class RemoteControl implements Switch {
     - 대부분의 의존 관계는 애플리케이션 종료까지 거의 변하지 않는다. → 생성자 주입 방식으로 객체를 생성할 때 불변(final 키워드)으로 설계할 수 있다.
     - DI 프레임워크에 의존하지 않고, 순수 자바 언어로도 잘 작동하며 자바 언어의 객체 지향이라는 특징을 잘 살릴 수 있다.
     - 생성자 주입은 필수 의존성을 강제하고, 의존성 주입이 명시적으로 보이기 때문에 수정자 주입/필드 주입 보다 테스트 하기에 더 용이하다.
+    
+    ### DI와 순환 참조
+    
+    - **순환 참조란?**
+        - A와 B 두 개의 객체가 있을 때, A가 B를 참조하고, B가 A에게 참조하는 경우를 말한다.
+    - 스프링 부트에서 순환 참조가 발생했을 때, 수정자 주입이나 필드 주입 방식을 사용했을 경우에는 애플리케이션 실행과정에서 예외가 발생하지 않는다.
+        - 필드 주입과 수정자 주입의 경우, 객체가 생성되고 난 뒤 의존 관계가 설정되기 때문에 스프링이 순환 참조를 발견할 수 없다. → **정상적으로 의존 관계가 설정됨.**
+    - 하지만 **생성자 주입 방식을 사용했을 경우에는 스프링 애플리케이션 로딩 시점에서 에러가 발생한다.**
+        - 왜? → 스프링 애플리케이션이 실행되면, A 클래스의 Bean을 만드는 과정에서 B 클래스의 Bean을 주입해야하는데, B의 Bean이 없다면 생성해야한다. 또, B 클래스의 Bean을 만드는 과정에서도 A 클래스의 Bean이 필요하다.
+        - 따라서 **무한 반복에 빠지게 되며, 스프링 애플리케이션이 구동되지 않는다.**
+    - 객체 생성 시점에서 순환참조가 일어나는 것(생성자 주입)과 객체 생성 후 비지니스 로직상에서 순환 참조가 일어나는 것(수정자 주입, 필드 주입)은 완전히 다른 이야기임!!
+    - 순환 참조 문제를 해결하려면?
+        
+        → **설계 단계에서 부터 순환 참조 관계를 만들지 않는 것이 최고의 선택이다.** 하지만 설계 단계에서 수정할 수 없는 경우에는, 수정자 주입이나 필드 주입 방식을 사용하거나 `@Lazy` 어노테이션을 이용해 의존 관계 주입을 나중으로 미루면 해결할 수 있다.!!
 
 - **AOP**
     
@@ -521,7 +572,19 @@ class RemoteControl implements Switch {
     2. 초기화: init() 메서드 호출로 Servlet초기화
     3. 서비스: service() 메서드 호출로 Servlet에게 요청 처리
     4. 종료: destroy() 메서드 호출로 Servlet제거, GC 진행, 디폴트로는 서버 종료시에만 실행된다.
-
+    
+    ### 스프링 기반 Servlet
+    
+    - **FrontController패턴**: 클라이언트의 모든 요청을 받는 하나의 서블릿 객체만 존재하고, FrontController가 적절한 컨트롤러를 직접 호출하는 패턴이다.
+        - Front Controller 에 등록되는 Controller 들은 서블릿 컨테이너에 의해 관리되지 않고, FrontController에 의해 호출된다.
+    - 스프링의 FrontController: **DispatcherServlet**
+        - **DispatcherServlet은 스프링부트에서 FrontController역할을 한다.**
+    - DispatcherServlet요청 흐름
+        - 클라이언트의 요청이 필터를 거쳐 DispatcherServlet으로 온다.
+        - DispatcherServlet은 핸들러 매핑으로 요청에 해당하는 핸들러를 찾는다.
+        - DispatcherServlet은 찾은 핸들러의 타입을 지원하는 핸들러 어댑터를 찾는다.
+        - 찾은 핸들러 어댑터에게 요청 정보를 넘겨주고, 핸들러(컨트롤러)를 실행시킨다.
+        - 핸들러 어댑터는 반환 값을 다시 DispatcherServlet에게 반환한다.
 - **자바의 Optional 클래스**
     
     ## Optional 이란?
@@ -583,7 +646,7 @@ class RemoteControl implements Switch {
     
     ## Stream API란?
     
-    - 람다식을 이용한 기술 중에 하나로 데이터 소스(컬렉션, 배열 등)를 조작 및 가공, 변환하여 원하는 값으로 변환해주는 인터페이스이다.
+    - 람다식을 이용한 기술 중에 하나로 데이터 소스(컬렉션, 배열 등)를 조작 및 가공, 변환하여 원하는 값으로 변환해주는 인터페이스 이다.
     - Stream API는 데이터를 추상화하고, 처리하는 데 자주 사용되는 함수들을 제공한다.
     
     ### 람다식(Lambda Expression)이란?
@@ -634,20 +697,106 @@ class RemoteControl implements Switch {
         nameStream.forEach(System.out::println); 
         ```
         
-        ### Stream 연산
+    
+    ### Stream 연산
+    
+    1. Stream 생성
+        1. empty stream 생성 → Stream.empty();
+        2. Collection 생성 → ArrayList.stream();
+    2. 중간 연산
+        1. filter() → 결과 값 필터링하기 위해 사용된다.
+        2. distinct() → 중복을 제거한 결과값을 반환하기 위해 사용된다.
+        3. **map() → 요소들을 원하는 값으로 변화하여서 반환하기 위해 사용된다.**
+        4. sorted() → 요소들에 대해서 오름/내림 차순을 수행하여 반환하기 위해 사용된다.
+        5. 등 … 많습니다.
+    3. 최종 연산
+        1. **forEach() → 배열 혹은 리스트 내에서 순회하며 요소에 대한 값을 출력하거나 새로운 형태로 변환하여 구성하기 위한 목적으로 사용된다.**
+        2. findFirst() → 스트림 내에서 가장 앞에 잇는 요소를 리턴하는 함수
+        3. findAny() → 스트림 내에서 먼저 탐색되는 요소를 리턴하는 함수
+        4. count() → 요소들의 개수를 리턴하는 함수
+        5. sum() → 요소들의 합을 리턴하는 함수
+    
+    ### Collectors 인터페이스
+    
+    - Collectors 인터페이스란?
         
-        1. Stream 생성
-            1. empty stream 생성 → Stream.empty();
-            2. Collection 생성 → ArrayList.stream();
-        2. 중간 연산
-            1. filter() → 결과 값 필터링하기 위해 사용된다.
-            2. distinct() → 중복을 제거한 결과값을 반환하기 위해 사용된다.
-            3. map() → 요소들을 원하는 값으로 변화하여서 반환하기 위해 사용된다.
-            4. sorted() → 요소들에 대해서 오름/내림 차순을 수행하여 반환하기 위해 사용된다.
-            5. 등 … 많습니다.
-        3. 최종 연산
-            1. forEach() → 배열 혹은 리스트 내에서 순회하며 요소에 대한 값을 출력하거나 새로운 형태로 변환하여 구성하기 위한 목적으로 사용된다.
-            2. findFirst() → 스트림 내에서 가장 앞에 잇는 요소를 리턴하는 함수
-            3. findAny() → 스트림 내에서 먼저 탐색되는 요소를 리턴하는 함수
-            4. count() → 요소들의 개수를 리턴하는 함수
-            5. sum() → 요소들의 합을 리턴하는 함수
+        → 자바 Stream API에서 제공하는 기능 중 하나로, Stream에서 수행한 연산 결과를 수집하여 다양한 Collection을 반환할 수 있는 메서드를 제공하는 클래스이다.
+        
+    - Collectors를 사용하면 요소들을 적절하게 그룹화, 분할, 집계, 변환할 수 있지만, 이를 위해서는 추가적인 객체 생성이 필요하다.
+    - 따라서 스트림의 크기가 작은 경우나, 간단한 작업을 처리할 때는 Collectors를 사용하지 않고 직접 구현하는 것이 더 효율적이다.
+    - 하지만, 스트림의 크기가 크고 복잡한 작업을 수행할 때는 Collectors를 사용하면 코드의 가독성와 유지 보수성이 향상될 수 있다.
+    - Collectors는 병렬 처리를 지원하므로 대용량 데이터 처리에 적합하다.
+    
+    ### Collectors의 메서드
+    
+    - toLIst(): 매개변수가 존재하지 않고, Stream을 List로 변환한다.
+        
+        ```java
+        String[] words = {"hihihi", "you", "thank"};
+        List<String> longWords = Arrays.stream(words).filter(w -> w.length() >=5)
+        												.collect(Collectors.toList());
+        												
+        System.out.println(longWords); //출력 결과: [hihihi, thank]
+        ```
+        
+    - toSet(): 매개변수가 존재하지 않고, Stream을 Set으로 변환한다.
+        - 중복을 제거하고 유일한 값들로만 구성된 컬렉션을 반환한다.
+        
+        ```java
+        List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5, 5); 
+        Set<Integer> uniqueNumbers = numbers.stream().collect(Collectors.toSet());
+        
+        System.out.println(uniqueNumbers): // 출력 결과: [1, 2, 3, 4, 5]
+        ```
+        
+    - toMap(): 매핑 함수와 값 추출 함수를 인수로 받으며 Stream을 Map으로 변환한다.
+        - Collectors.toMap(keyMapper, valueMapper)
+        - 만약 keyMapper에서 중복이 발생한 경우, IllegalStateException이 발생한다.
+        - 세 번째 인자로 mergeFunction을 넣으면 중복 key를 처리할 수 있다.
+        
+        ```java
+        List<String> fruits = Arrays.asList("apple", "banana", "cherry");
+        Map<String, Integer> fruitLengthMap = fruits.stream().collect(Collectors.toMap(
+        																			fruit -> fruit, fruit -> fruit.length()));
+        System.out.println(fruitLengthMap(); // 출력 결과: {banana=6, cherry=6, apple=5}																			
+        ```
+        
+    - joining: Stream의 문자열 요소를 결합하여 하나의 문자열로 반환한다.
+        - joining(): 구분자없이 요소를 연결하여 하나의 문자열로 반환한다.
+        - joining(CharSequence delimiter): 구분자를 인자로 받아 구분자 요소들을 연결하여 하나의 문자열을 반환한다.
+        - joining(CharSequence delimiter, CharSequence prefix, CharSequence suffix): 구분자 뿐만 아니라 접두사와 접미사를 인자로 받아 구분자로 연결 후 접두사와 접미사를 추가한다.
+        
+        ```java
+        List<String> strings = Arrays.asList("ha", "hai", "haaaai");
+        String result = strings.stream().collect(Collectors.joining(", "));
+        System.out.println(result); // 출력 결과: "ha, hai, haaaai"
+        
+        result = strings.stream().collect(Collectors.joining(", ", "[", "]"));
+        System.out.pringln(result); // 출력 결과: "[ha, hai, haaaai]"
+        ```
+        
+    - groupingBy: Stream의 요소를 그룹화하여 Map으로 반환한다.
+        - Collectors.groupingBy(분류함수) → Map<key, List<값>>
+        - Collectors.groupingBy(분류함수, Collector) → Map<key, Collector 결과>
+        - Collectors.groupingBy(분류함수, Map Supplier, Collector) → 원하는 Map 타입으로 결과 생성 가능
+        
+        ```java
+        List<String> words = Arrays.asList("apple", "banana", "cherry", "avocado");
+        
+        Map<Character, List<String>> grouped = words.stream()
+            .collect(Collectors.groupingBy(word -> word.charAt(0)));
+        
+        System.out.println(grouped); 
+        // 출력 결과: {a=[apple, avocado], b=[banana], c=[cherry]}
+        ```
+        
+    - partitioningBy: Stream의 요소를 분할하여 Map으로 반환한다.
+        - Collectors.partitionBy(분류함수) → Map<Boolean, List<값>>
+        - Collectors.partitionBy(분류함수, Collector) → Map<Boolean, Collector 결과>
+        
+        ```java
+        List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+        Map<Boolean, List<Integer>> evenOddMap = numbers.stream()
+        													.collect(Collectors.partitioningBy(n -> n % 2 == 0));
+        System.out.println(evenOddMap); // {false=[1, 3, 5, 7, 9], true = [2, 4, 6, 8, 10]}
+        ```
