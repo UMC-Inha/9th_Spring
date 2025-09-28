@@ -10,3 +10,6 @@
 데이터베이스 연동을 위해 **MySQL 드라이버**와 **JPA 의존성**을 추가했으며, 개발 편의성을 높이기 위해 **Lombok**도 함께 적용했습니다.
 
 ![image.png](/mission/chapter03/image/project_setting_2.png)
+
+## 실행 화면
+![image.png](/mission/chapter03/image/project_setting_3.png)
