@@ -65,6 +65,15 @@ public class MemberController {
 }
 ```
 
+- `message = “”`  속성으로 해당 필드에 유효하지 않은 값이 오는 경우 알릴 메시지를 지정할 수 있다.
+- 유효성 검증에 실패할 경우 `MethodArgumentNotValidException`이 발생한다.
+
+### @Valid 적용 방법
+
+- 검증할 대상의 앞에 @RequestBody와 함께 @Valid 어노테이션을 붙여주면 해당 input에 대해서 검증을 진행한다.
+- 단일 파라미터를 검증 하고 싶은 경우 @Valid가 아닌 유효성 검사 어노테이션을 바로 붙여서 검증할 수 있다.
+- 검증할 객체 안에 중첩된 dto가 존재한다면 @Valid를 붙여 중첩으로 검증할 수 있다.
+
 ### 문자열 검증
 
 - @NotBlank: null이 아닌 값
